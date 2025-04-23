@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 
 export default function Signup() {
@@ -9,8 +9,9 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const navigate = useNavigate();
 
-  // Handle Email/Password Sign-In (placeholder)
+
   const handleEmailSignUp = (e) => {
     e.preventDefault();
     setError(null);
@@ -21,8 +22,9 @@ export default function Signup() {
         
         setTimeout(()=>{
           setSuccess("");
+          navigate("/login");
         }, 2000);
-        
+
         console.log(response.data);
       })
       .catch((error) => {
