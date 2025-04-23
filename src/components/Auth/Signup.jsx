@@ -1,19 +1,47 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import api from "../../api/axios";
 
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   // Handle Email/Password Sign-In (placeholder)
   const handleEmailSignUp = (e) => {
     e.preventDefault();
     setError(null);
-    // Add email/password auth logic here (e.g., using Firebase signInWithEmailAndPassword)
-    console.log("Email Sign-In attempted with:", email, password);
+    api
+      .post("/register", { name, email, password })
+      .then((response) => {
+        setSuccess(response.data.message);
+        
+        setTimeout(()=>{
+          setSuccess("");
+        }, 2000);
+        
+        console.log(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          setError(error.response.data.message)
+          setTimeout(()=> {
+            setError("");
+          }, 2000)
+
+
+          console.log(error.response.data.message);
+        } else {
+          console.log("Unexpected error:", error);
+        }
+      });
+
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
@@ -27,6 +55,12 @@ export default function Signup() {
           {error && (
             <div className="bg-red-600 text-white p-3 rounded-lg mb-4 text-center">
               {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="bg-green-600 text-white p-3 rounded-lg mb-4 text-center">
+              {success}
             </div>
           )}
 
