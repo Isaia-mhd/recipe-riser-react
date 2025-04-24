@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../api/AuthContext";
 
 export default function Hero() {
+  const { user } = useAuth();
   return (
     <>
       <section className="bg-gray-800 py-20 text-center">
@@ -13,9 +15,11 @@ export default function Hero() {
             Join RecipeRiser to discover, create, and share recipes with food
             lovers worldwide.
           </p>
-          <Link to='login' className="bg-amber-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-amber-500 transition">
+          {user ? (<Link to='/recipes' className="bg-amber-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-amber-500 transition">
             Get Started
-          </Link>
+          </Link>) : <Link to='login' className="bg-amber-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-amber-500 transition">
+            Get Started
+          </Link>}
         </div>
       </section>
     </>

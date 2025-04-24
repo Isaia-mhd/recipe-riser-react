@@ -1,18 +1,28 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../api/AuthContext";
 
 export default function Login() {
+  const { login, error } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
+  const navigate = useNavigate()
 
-  // Handle Email/Password Sign-In (placeholder)
-  const handleEmailSignIn = (e) => {
+
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    setError(null);
-    // Add email/password auth logic here (e.g., using Firebase signInWithEmailAndPassword)
-    console.log("Email Sign-In attempted with:", email, password);
+    try {
+      await login(email, password);
+      navigate('/recipes');
+    } catch (error) {
+      console.log("Login Failed: " ,error);
+    }
+    setEmail("");
+    setPassword(""); 
+
+      
   };
 
   return (
@@ -38,7 +48,7 @@ export default function Login() {
           <div className="text-center text-gray-400 my-4">OR</div>
 
           {/* Email/Password Form */}
-          <div onSubmit={handleEmailSignIn} className="space-y-4">
+          <div onSubmit={handleSignIn} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-gray-300 mb-1">
                 Email
@@ -69,7 +79,7 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              onClick={handleEmailSignIn}
+              onClick={handleSignIn}
               className="w-full bg-amber-400 text-gray-900 px-4 py-3 rounded-lg font-semibold hover:bg-amber-500 transition cursor-pointer"
             >
               Sign In

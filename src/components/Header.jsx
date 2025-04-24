@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../api/AuthContext";
 
 export default function Header() {
+  const { user, logout } = useAuth();
   return (
     <>
       <nav className="bg-gray-900 p-4 shadow-lg">
@@ -14,24 +16,50 @@ export default function Header() {
             >
               Home
             </Link>
-            <Link
-              to="/recipes"
-              className="text-gray-300 hover:text-amber-400 transition"
-            >
-              Recipes
-            </Link>
-            <Link
-              to="community"
-              className="text-gray-300 hover:text-amber-400 transition"
-            >
-              Community
-            </Link>
-            <Link
-              to="login"
-              className="text-gray-300 hover:text-amber-400 transition"
-            >
-              Login
-            </Link>
+            {user && (
+              <>
+                {/* RECIPES */}
+                <Link
+                  to="/recipes"
+                  className="text-gray-300 hover:text-amber-400 transition"
+                >
+                  Recipes
+                </Link>
+
+                <Link
+                  to="community"
+                  className="text-gray-300 hover:text-amber-400 transition"
+                >
+                  Community
+                </Link>
+
+                {/* LOGOUT */}
+                <button
+                  onClick={logout}
+                  className="text-white hover:text-amber-400 transition cursor-pointer bg-red-700 px-2 font-semibold py-0.5 rounded-md"
+                >
+                  Logout
+                </button>
+              </>
+            )}
+
+            {!user && (
+              <>
+                <Link
+                  to="community"
+                  className="text-gray-300 hover:text-amber-400 transition"
+                >
+                  Community
+                </Link>
+
+                <Link
+                  to="login"
+                  className="text-gray-300 hover:text-amber-400 transition"
+                >
+                  Login
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
