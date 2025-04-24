@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  Outlet,
 } from "react-router-dom";
 import Home from "./components/Home";
 import FeedList from "./components/FeedList";
@@ -13,32 +14,33 @@ import Signup from "./components/Auth/Signup";
 
 import { AuthProvider, useAuth } from "./api/AuthContext.jsx";
 
-function PrivateRoute({ children }) {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/login" />;
+function PrivateRoute() {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div className="text-center text-white">Loading...</div>;
+
+  return user ? <Outlet /> : <Navigate to="/login" />;
 }
 function App() {
   return (
     <>
-      <AuthProvider>
-        <Router>
+      <Router>
+        <AuthProvider>
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+
             <Route path="/login" element={<Login />} />
+
             <Route path="/register" element={<Signup />} />
-            <Route
-              path="/recipes"
-              element={
-                <PrivateRoute>
-                  <FeedList />
-                </PrivateRoute>
-              }
-            />
+
+            <Route path="/recipes" element={<PrivateRoute />}>
+              <Route index element={<FeedList />} />
+            </Route>
           </Routes>
           <Footer />
-        </Router>
-      </AuthProvider>
+        </AuthProvider>
+      </Router>
     </>
   );
 }

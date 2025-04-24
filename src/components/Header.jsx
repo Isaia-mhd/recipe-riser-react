@@ -1,9 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../api/AuthContext";
 
 export default function Header() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate("/login")
+  }
   return (
     <>
       <nav className="bg-gray-900 p-4 shadow-lg">
@@ -35,7 +40,7 @@ export default function Header() {
 
                 {/* LOGOUT */}
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="text-white hover:text-amber-400 transition cursor-pointer bg-red-700 px-2 font-semibold py-0.5 rounded-md"
                 >
                   Logout

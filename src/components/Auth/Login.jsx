@@ -1,28 +1,20 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../api/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { login, error } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [error, setError] = useState(null);
-  const navigate = useNavigate()
-
-
+  const navigate = useNavigate();
   const handleSignIn = async (e) => {
     e.preventDefault();
-    try {
-      await login(email, password);
-      navigate('/recipes');
-    } catch (error) {
-      console.log("Login Failed: " ,error);
+    
+    const success = await login(email, password);
+    if(success){
+      navigate("/");
     }
-    setEmail("");
-    setPassword(""); 
-
-      
   };
 
   return (
@@ -41,14 +33,14 @@ export default function Login() {
 
           {/* Google Sign-In Button */}
           <button className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer mb-4 hover:bg-gray-600 transition  ">
-            <FcGoogle className="text-2xl"/>
+            <FcGoogle className="text-2xl" />
             Sign in with Google
           </button>
 
           <div className="text-center text-gray-400 my-4">OR</div>
 
           {/* Email/Password Form */}
-          <div onSubmit={handleSignIn} className="space-y-4">
+          <form onSubmit={handleSignIn} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-gray-300 mb-1">
                 Email
@@ -79,12 +71,11 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              onClick={handleSignIn}
               className="w-full bg-amber-400 text-gray-900 px-4 py-3 rounded-lg font-semibold hover:bg-amber-500 transition cursor-pointer"
             >
               Sign In
             </button>
-          </div>
+          </form>
           <div className="text-center mt-3">
             <Link
               to="/forgot-password"
@@ -95,7 +86,10 @@ export default function Login() {
           </div>
           <p className="text-center text-gray-300 mt-4">
             Don’t have an account?{" "}
-            <Link to="/register" className="text-amber-400 hover:underline cursor-pointer">
+            <Link
+              to="/register"
+              className="text-amber-400 hover:underline cursor-pointer"
+            >
               Sign up
             </Link>
           </p>

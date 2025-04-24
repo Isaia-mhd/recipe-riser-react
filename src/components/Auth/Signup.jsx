@@ -16,7 +16,7 @@ export default function Signup() {
     e.preventDefault();
     setError(null);
     api
-      .post("/register", { name, email, password })
+      .post("/api/register", { name, email, password })
       .then((response) => {
         setSuccess(response.data.message);
         
@@ -30,12 +30,11 @@ export default function Signup() {
       .catch((error) => {
         if (error.response) {
           setError(error.response.data.message)
+          console.log(error.response.data.message);
+          
           setTimeout(()=> {
             setError("");
           }, 2000)
-
-
-          console.log(error.response.data.message);
         } else {
           console.log("Unexpected error:", error);
         }
