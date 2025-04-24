@@ -13,11 +13,12 @@ import Login from "./components/Auth/Login";
 import Signup from "./components/Auth/Signup";
 
 import { AuthProvider, useAuth } from "./api/AuthContext.jsx";
+import { Spinner } from "./components/Spinner.jsx";
 
 function PrivateRoute() {
   const { user, loading } = useAuth();
 
-  if (loading) return <div className="text-center text-white">Loading...</div>;
+  if (loading) return <Spinner/>;
 
   return user ? <Outlet /> : <Navigate to="/login" />;
 }
