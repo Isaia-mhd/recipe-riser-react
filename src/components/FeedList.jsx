@@ -6,12 +6,14 @@ import api from "../api/axios";
 import { Spinner } from "./Spinner";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { ReviewCard } from "./Review/ReviewCard";
 
 dayjs.extend(relativeTime);
 
 export default function FeedList() {
   const [isLoading, setIsLoading] = useState(false);
   const [recipeData, setRecipeData] = useState([]);
+  const [openedCommentId, setOpenedCommentId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,9 +129,13 @@ export default function FeedList() {
                   
                   <div className="flex justify-end items-center gap-2">
                   <span className="text-[16px]">{recipe.reviews?.length}</span>  
-                  <FaRegCommentDots className="cursor-pointer text-blue-500" />
+                  <FaRegCommentDots className="cursor-pointer text-blue-500" onClick={()=> setOpenedCommentId(openedCommentId == recipe.id ? null : recipe.id )}/>  
                   </div>
                 </div>
+
+                {openedCommentId === recipe.id && (
+                  <ReviewCard reviews={recipe.reviews} recipeId={recipe.id} />
+                )}
               </div>
             ))}
           </div>
