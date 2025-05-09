@@ -14,6 +14,7 @@ import Signup from "./components/Auth/Signup";
 
 import { AuthProvider, useAuth } from "./api/AuthContext.jsx";
 import { Spinner } from "./components/Spinner.jsx";
+import { ForgotPassword } from "./components/Auth/ForgotPassword.jsx";
 
 function PrivateRoute() {
   const { user, loading } = useAuth();
@@ -34,6 +35,8 @@ function App() {
             <Route path="/login" element={<Login />} />
 
             <Route path="/register" element={<Signup />} />
+
+            <Route path="/forgot-password" element={<ForgotPassword />} />
 
             <Route path="/recipes" element={<PrivateRoute />}>
               <Route index element={<FeedList />} />

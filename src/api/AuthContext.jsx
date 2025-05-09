@@ -47,6 +47,27 @@ export const AuthProvider = ({ children }) => {
       return false;
     }
   };
+
+  const forgotPassword = async(email) => {
+    try {
+      const response = await api.post('/api/forgot-password', { email });
+      console.log(response.data.message);
+      
+      setError(null);
+      return true;
+      
+    } catch (error) {
+      
+      setError(error.response?.data.message)
+      
+      setTimeout(()=> {
+        setError(null)
+      
+      }, 3000)
+      console.log(error.response.data.message);
+      
+    }
+  }
   
 
   const logout = async() => {
@@ -66,7 +87,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, user, error, login, logout, loading }}>
+    <AuthContext.Provider value={{ token, user, error, login, logout, loading, forgotPassword }}>
       {children}
     </AuthContext.Provider>
   );
